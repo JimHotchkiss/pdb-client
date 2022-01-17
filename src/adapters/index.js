@@ -6,8 +6,19 @@ const searchBtnHandler = () => {
 const briefBtn = document.getElementById('brief-btn')
 const sectionOneImage = document.getElementById('section-one-img')
 briefBtn.addEventListener('click', () => {
-    fetchBriefing()
+    // fetchBriefing()
+    renderData()
     })
+}
+
+const renderData = () => {
+    const renderDataSection = document.getElementById('render-news-section');
+    renderDataSection.classList.toggle('d-none')
+    window.scrollTo({
+        top: 700,
+        left: 100,
+        behavior: 'smooth'
+      });
 }
 
 const fetchBriefing = () => {

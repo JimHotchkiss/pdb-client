@@ -1,6 +1,11 @@
+#render-news-section {
+    min-height: 1000px;
+}
+
 @media(min-width: 769px) {
    .search-input {
        max-width: 50%;
    }
 }
+
 
