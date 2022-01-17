@@ -4,13 +4,22 @@ window.onload = function() {
 
 const searchBtnHandler = () => {
 const briefBtn = document.getElementById('brief-btn')
+const sectionOneImage = document.getElementById('section-one-img')
 briefBtn.addEventListener('click', () => {
-    const btnClassList = briefBtn.classList
-    for(var i = 0; i < btnClassList.length; i++){
-        if(btnClassList[i] == 'btn-primary'){
-           briefBtn.classList.toggle('btn-danger')
-        }
-    }
+    sectionOneImage.src = "./styles/images/section1-logo3.svg"
+    // if (sectionOneImage.src == "./styles/images/section1-logo4.svg") {
+    //     console.log('if',sectionOneImage.src)
+    //     sectionOneImage.src = "./styles/images/section1-logo3.svg"
+    // } else {
+    //     console.log('else',sectionOneImage.src)
+    //     sectionOneImage.src = "./styles/images/section1-logo4.svg" 
+    // }
+    // const btnClassList = briefBtn.classList
+    // for(var i = 0; i < btnClassList.length; i++){
+    //     if(btnClassList[i] == 'btn-primary'){
+    //        briefBtn.classList.toggle('btn-danger')
+    //     }
+    // }
     })
 }
 
