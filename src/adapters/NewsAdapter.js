@@ -4,9 +4,9 @@ class NewsAdapter {
     }
 
     // Create a method that fetches the news data
-    getNews() {
-        return fetch(this.newsBaseUrl)
-        .then(response => response.json())
-        .then(response => console.log(response))
+    async getNews() {
+        let response = await fetch(this.newsBaseUrl)
+        let data = await response.json()
+        console.log(data.articles)
     }
 }
