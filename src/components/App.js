@@ -22,7 +22,7 @@ const renderData = (newsData) => {
     for(let item in newsData) {
     const cardDiv = document.createElement('div')
     cardDiv.setAttribute('class', 'card my-3')
-    cardDiv.setAttribute('style', 'min-width: 25%')
+    cardDiv.setAttribute('style', 'min-width: 33%')
     const cardImage = document.createElement('img')
     cardImage.setAttribute('src', `${newsData[item].urlToImage}`)
     cardImage.setAttribute('class', 'card-img-top')
@@ -47,10 +47,9 @@ const renderData = (newsData) => {
     cardDiv.appendChild(cardBody)
     renderNewsSection.appendChild(cardDiv)
     }
-    // renderNewsSection.classList.toggle('d-none')
-    // window.scrollTo({
-    //     top: 700,
-    //     behavior: 'smooth'
-    // });  
+    window.scrollTo({
+        top: 700,
+        behavior: 'smooth'
+    });  
 }
 
