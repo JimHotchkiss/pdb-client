@@ -1,8 +1,7 @@
 .card:hover {
     cursor: pointer;
-    /* opacity: 0.7; */
     background-color: #ffc107;
-    transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in-out;
 }
 @media(min-width: 769px) {
    .search-input {
