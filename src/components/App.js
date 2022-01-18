@@ -21,7 +21,8 @@ const renderData = (newsData) => {
     const renderNewsSection = document.getElementById('render-news-section')
     for(let item in newsData) {
     const cardDiv = document.createElement('div')
-    cardDiv.setAttribute('class', 'card w-25')
+    cardDiv.setAttribute('class', 'card my-3')
+    cardDiv.setAttribute('style', 'min-width: 25%')
     const cardImage = document.createElement('img')
     cardImage.setAttribute('src', `${newsData[item].urlToImage}`)
     cardImage.setAttribute('class', 'card-img-top')
