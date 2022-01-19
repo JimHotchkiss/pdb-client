@@ -1,6 +1,23 @@
-.card:hover {
+/* .card:hover {
     cursor: pointer;
     background-color: #ffc107;
+    transition: all 0.3s ease-in-out;
+} */
+
+.data-heart-image {
+    background: transparent url("../styles/images/heart.svg");
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    width: 27px;
+    height: 27px;
+    background-size: 25px;
+    margin: 20px 0 0 auto;
+    transition: all 0.3s ease-in-out;
+}
+
+.data-heart-image:hover {
+    cursor: pointer;
+    background-size: 27px;
     transition: all 0.3s ease-in-out;
 }
 @media(min-width: 769px) {

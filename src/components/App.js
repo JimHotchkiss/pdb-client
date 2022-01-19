@@ -50,7 +50,7 @@ const renderData = (newsData) => {
     for(let item in newsData) {
         console.log(newsData[item])
     const cardDiv = document.createElement('div')
-    cardDiv.setAttribute('class', 'card m-2')
+    cardDiv.setAttribute('class', 'card border m-2')
     cardDiv.setAttribute('style', 'min-width: 20%')
     const cardImage = document.createElement('img')
     if (newsData[item].urlToImage == null) {
@@ -74,6 +74,8 @@ const renderData = (newsData) => {
     cardBtn.setAttribute('href', `${newsData[item].url}`)
     cardBtn.setAttribute('target', '_blank')
     cardBtn.innerText = 'Learn More'
+    const dataHeart = document.createElement('div')
+    dataHeart.setAttribute('class', 'data-heart-image mt-1 mb-3')
     const cardSmallText = document.createElement('small')
     cardSmallText.setAttribute('class', 'text-muted')
 
@@ -83,6 +85,7 @@ const renderData = (newsData) => {
 
     stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
     cardSmallText.innerText = `${stringEvent}`
+    cardBody.appendChild(dataHeart)
     cardBody.appendChild(cardH5Tag)
     cardBody.appendChild(cardImage)
     cardPtag2.appendChild(cardSmallText)
