@@ -1,7 +1,23 @@
 window.onload = function() {
     getYourBriefBtnHandler()
+    getUsersBtnHandler()
     searchTopicBtnHandler()
   };
+const getUsersBtnHandler = () => {
+    const usersBaseUrl = 'http://localhost:3000/api/v1/'
+    const usersIdBtn = document.getElementById('users-id')
+    usersIdBtn.addEventListener('click', () => {
+        getUsers()
+    })
+
+}
+
+const getUsers = () => {
+    const usersBaseUrl = 'http://localhost:3000/api/v1/'
+    fetch(usersBaseUrl + `users`)
+    .then(response => response.json())
+    .then(response => console.log(response.data))
+}
 
 const searchTopicBtnHandler = () => {
     const searchTopicBtn = document.getElementById('search-topic-btn')
@@ -74,8 +90,8 @@ const renderData = (newsData) => {
     cardBtn.setAttribute('href', `${newsData[item].url}`)
     cardBtn.setAttribute('target', '_blank')
     cardBtn.innerText = 'Learn More'
-    const dataHeart = document.createElement('div')
-    dataHeart.setAttribute('class', 'data-heart-image mt-1 mb-3')
+    // const dataHeart = document.createElement('div')
+    // dataHeart.setAttribute('class', 'data-heart-image mt-1 mb-3')   
     const cardSmallText = document.createElement('small')
     cardSmallText.setAttribute('class', 'text-muted')
 
@@ -85,7 +101,7 @@ const renderData = (newsData) => {
 
     stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
     cardSmallText.innerText = `${stringEvent}`
-    cardBody.appendChild(dataHeart)
+    // cardBody.appendChild(dataHeart)
     cardBody.appendChild(cardH5Tag)
     cardBody.appendChild(cardImage)
     cardPtag2.appendChild(cardSmallText)
