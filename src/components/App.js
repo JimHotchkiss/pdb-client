@@ -132,12 +132,11 @@ const favoriteBtnHandler = () => {
 }
 
 const findFavoriteStory = favoriteId => {
-    const renderNewsSection = document.getElementById('render-news-section').children
-    for(newsStory of renderNewsSection){
-        if(favoriteId == newsStory.id) {
-            console.log(newsStory.firstChild)
+    const renderNewsSection = document.getElementById('render-news-section').childNodes
+    renderNewsSection.forEach(item =>{
+        if(favoriteId == item.id) {
+            console.log(item)
         }
-    }
- 
+    })
 }
 
