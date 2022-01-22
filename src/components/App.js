@@ -1,22 +1,21 @@
 window.onload = function() {
     getYourBriefBtnHandler()
-    getUsersBtnHandler()
+    getFavoritesBtnHandler()
     searchTopicBtnHandler()
   };
-const getUsersBtnHandler = () => {
-    const usersBaseUrl = 'http://localhost:3000/api/v1/'
-    const usersIdBtn = document.getElementById('users-id')
+const getFavoritesBtnHandler = () => {
+    const usersIdBtn = document.getElementById('favorites-id')
     usersIdBtn.addEventListener('click', () => {
-        getUsers()
+        getFavorites()
     })
 
 }
 
-const getUsers = () => {
+const getFavorites = () => {
     const usersBaseUrl = 'http://localhost:3000/api/v1/'
-    fetch(usersBaseUrl + `users`)
+    fetch(usersBaseUrl + `favorites`)
     .then(response => response.json())
-    .then(response => console.log(response.data))
+    .then(response => console.log(response))
 }
 
 const searchTopicBtnHandler = () => {
