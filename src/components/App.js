@@ -65,7 +65,7 @@ const renderData = (newsData) => {
     const renderNewsSection = document.getElementById('render-news-section')
     for(let item in newsData) {
     const randomNumber = Math.random()
-        console.log(newsData[item], randomNumber)
+        // console.log(newsData[item], randomNumber)
     const cardDiv = document.createElement('div')
     cardDiv.setAttribute('id', randomNumber)
     cardDiv.setAttribute('class', 'card border m-2')
@@ -77,19 +77,23 @@ const renderData = (newsData) => {
         cardImage.setAttribute('src', `${newsData[item].urlToImage}`)
     }
     cardImage.setAttribute('class', 'card-img-top')
+    cardImage.setAttribute('id', `card-image-${randomNumber}`)
     const cardBody = document.createElement('div')
     cardBody.setAttribute('class', 'card-body')
     const cardH5Tag = document.createElement('h5')
     cardH5Tag.setAttribute('class', 'card-title')
+    cardH5Tag.setAttribute('id', `card-title-${randomNumber}`)
     cardH5Tag.innerText = `${newsData[item].title}`
     const cardPtag1 = document.createElement('p')
     cardPtag1.setAttribute('class', 'card-text')
+    cardPtag1.setAttribute('id', `card-description-${randomNumber}`)
     cardPtag1.innerText = `${newsData[item].description}`
     const cardPtag2 = document.createElement('p')
     cardPtag2.setAttribute('class', 'card-text')
     const cardBtn = document.createElement('a')
     cardBtn.setAttribute('class', 'btn btn-primary')
     cardBtn.setAttribute('href', `${newsData[item].url}`)
+    cardBtn.setAttribute('id', `story-url-${randomNumber}`)
     cardBtn.setAttribute('target', '_blank')
     cardBtn.innerText = 'Learn More'
     const dataHeart = document.createElement('div')
@@ -97,6 +101,7 @@ const renderData = (newsData) => {
     dataHeart.setAttribute('data-id', randomNumber) 
     const cardSmallText = document.createElement('small')
     cardSmallText.setAttribute('class', 'text-muted')
+    cardSmallText.setAttribute('id', `date-published-${randomNumber}`)
 
     // Date function 
     const event = new Date(newsData[item].publishedAt)
@@ -126,17 +131,27 @@ const favoriteBtnHandler = () => {
     for (favoriteBtn of dataHeartHtmlGroup){
         favoriteBtn.addEventListener('click', () => {
             const favoriteId = favoriteBtn.dataset.id 
-            findFavoriteStory(favoriteId)})
+            findFavoriteStoryAttributes(favoriteId)})
     }
-
 }
 
-const findFavoriteStory = favoriteId => {
-    const renderNewsSection = document.getElementById('render-news-section').childNodes
-    renderNewsSection.forEach(item =>{
-        if(favoriteId == item.id) {
-            console.log(item)
-        }
-    })
+
+const findFavoriteStoryAttributes = favoriteId => {
+    const favoriteStoryObj = {
+        title: document.getElementById(`card-title-${favoriteId}`).innerText,
+        description: document.getElementById(`card-description-${favoriteId}`).innerText,
+        imgUrl: favoriteImgUrl = document.getElementById(`card-image-${favoriteId}`).getAttribute("src"),
+        storyUrl:document.getElementById(`story-url-${favoriteId}`).getAttribute("href"),
+        datePublished: document.getElementById(`date-published-${favoriteId}`).innerText,
+      };
+
+     postFavoriteStory(favoriteStoryObj)
 }
+
+const postFavoriteStory = favoriteStoryObj => {
+    console.log(favoriteStoryObj)
+}
+
+
+
 
