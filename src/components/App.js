@@ -137,19 +137,28 @@ const favoriteBtnHandler = () => {
 
 
 const findFavoriteStoryAttributes = favoriteId => {
-    const favoriteStoryObj = {
+    const favoriteStoryObj = {favorite:{
         title: document.getElementById(`card-title-${favoriteId}`).innerText,
         description: document.getElementById(`card-description-${favoriteId}`).innerText,
-        imgUrl: favoriteImgUrl = document.getElementById(`card-image-${favoriteId}`).getAttribute("src"),
+        imageUrl: favoriteImgUrl = document.getElementById(`card-image-${favoriteId}`).getAttribute("src"),
         storyUrl:document.getElementById(`story-url-${favoriteId}`).getAttribute("href"),
         datePublished: document.getElementById(`date-published-${favoriteId}`).innerText,
-      };
+      }};
 
      postFavoriteStory(favoriteStoryObj)
 }
 
 const postFavoriteStory = favoriteStoryObj => {
-    console.log(favoriteStoryObj)
+    fetch('http://localhost:3000/api/v1/favorites', {
+        method: 'post',
+        headers:  {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+        body: JSON.stringify(favoriteStoryObj)
+    })
+    .then(response => response.json())
+    .then(response => console.log(response))
 }
 
 
