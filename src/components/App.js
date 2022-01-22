@@ -64,8 +64,10 @@ const getBriefingData = () => {
 const renderData = (newsData) => {
     const renderNewsSection = document.getElementById('render-news-section')
     for(let item in newsData) {
-        console.log(newsData[item])
+    const randomNumber = Math.random()
+        console.log(newsData[item], randomNumber)
     const cardDiv = document.createElement('div')
+    cardDiv.setAttribute('id', randomNumber)
     cardDiv.setAttribute('class', 'card border m-2')
     cardDiv.setAttribute('style', 'min-width: 20%')
     const cardImage = document.createElement('img')
@@ -90,18 +92,19 @@ const renderData = (newsData) => {
     cardBtn.setAttribute('href', `${newsData[item].url}`)
     cardBtn.setAttribute('target', '_blank')
     cardBtn.innerText = 'Learn More'
-    // const dataHeart = document.createElement('div')
-    // dataHeart.setAttribute('class', 'data-heart-image mt-1 mb-3')   
+    const dataHeart = document.createElement('div')
+    dataHeart.setAttribute('class', 'data-heart-image mt-1 mb-3')  
+    dataHeart.setAttribute('data-id', randomNumber) 
     const cardSmallText = document.createElement('small')
     cardSmallText.setAttribute('class', 'text-muted')
 
     // Date function 
     const event = new Date(newsData[item].publishedAt)
     let stringEvent = event.toString()
-
     stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
     cardSmallText.innerText = `${stringEvent}`
-    // cardBody.appendChild(dataHeart)
+
+    cardBody.appendChild(dataHeart)
     cardBody.appendChild(cardH5Tag)
     cardBody.appendChild(cardImage)
     cardPtag2.appendChild(cardSmallText)
@@ -115,5 +118,26 @@ const renderData = (newsData) => {
         top: 700,
         behavior: 'smooth'
     });  
+    favoriteBtnHandler()
+}
+
+const favoriteBtnHandler = () => {
+    const dataHeartHtmlGroup = document.getElementsByClassName('data-heart-image')
+    for (favoriteBtn of dataHeartHtmlGroup){
+        favoriteBtn.addEventListener('click', () => {
+            const favoriteId = favoriteBtn.dataset.id 
+            findFavoriteStory(favoriteId)})
+    }
+
+}
+
+const findFavoriteStory = favoriteId => {
+    const renderNewsSection = document.getElementById('render-news-section').children
+    for(newsStory of renderNewsSection){
+        if(favoriteId == newsStory.id) {
+            console.log(newsStory.firstChild)
+        }
+    }
+ 
 }
 
