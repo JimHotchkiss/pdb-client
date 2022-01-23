@@ -2,8 +2,10 @@ window.onload = function() {
     getYourBriefBtnHandler()
     getFavoritesBtnHandler()
     searchTopicBtnHandler()
+    
   };
 
+let newsDataState 
 const getFavoritesBtnHandler = () => {
     const usersIdBtn = document.getElementById('favorites-id')
     usersIdBtn.addEventListener('click', () => {
@@ -44,7 +46,10 @@ const resetSearchTopicPlaceHolder = () => {
 const getSearchTopicData = (searchInputValue) => {
     fetch(`https://newsapi.org/v2/everything?q=${searchInputValue}&apiKey=bcd9264c4d4646b5a22d288a9a796d3d`)
     .then(response => response.json())
-    .then(response => renderData(response.articles))
+    .then(response => () => {
+        renderData(response.articles)
+        newsDataState = response.articles
+    })
 }
 
 const getYourBriefBtnHandler = () => {
@@ -63,75 +68,137 @@ const getBriefingData = () => {
 
 const renderData = (newsData) => {
     const renderNewsSection = document.getElementById('render-news-section')
-    for(let item in newsData) {
-    const randomNumber = Math.random()
-    const cardDiv = document.createElement('div')
-    cardDiv.setAttribute('id', randomNumber)
-    cardDiv.setAttribute('class', 'card border m-2')
-    cardDiv.setAttribute('style', 'min-width: 20%')
-    const cardImage = document.createElement('img')
-    if (newsData[item].urlToImage == null) {
-        cardImage.setAttribute('src', '../../styles/images/no-photo.png')
+    console.log(newsData)
+    // Clear Html 
+    clearHtmlContent()
+    // Array
+    if (Array.isArray(newsData)) {
+        for(let item in newsData) {
+        const itemId = Math.random()
+        const cardDiv = document.createElement('div')
+        cardDiv.setAttribute('id', itemId)
+        cardDiv.setAttribute('class', 'card border m-2')
+        cardDiv.setAttribute('style', 'min-width: 20%')
+        const cardImage = document.createElement('img')
+        if (newsData[item].urlToImage == null) {
+            cardImage.setAttribute('src', '../../styles/images/no-photo.png')
+        } else {
+            cardImage.setAttribute('src', `${newsData[item].urlToImage}`)
+        }
+        cardImage.setAttribute('class', 'card-img-top')
+        cardImage.setAttribute('id', `card-image-${itemId}`)
+        const cardBody = document.createElement('div')
+        cardBody.setAttribute('class', 'card-body')
+        const cardH5Tag = document.createElement('h5')
+        cardH5Tag.setAttribute('class', 'card-title')
+        cardH5Tag.setAttribute('id', `card-title-${itemId}`)
+        cardH5Tag.innerText = `${newsData[item].title}`
+        const cardPtag1 = document.createElement('p')
+        cardPtag1.setAttribute('class', 'card-text')
+        cardPtag1.setAttribute('id', `card-description-${itemId}`)
+        cardPtag1.innerText = `${newsData[item].description}`
+        const cardPtag2 = document.createElement('p')
+        cardPtag2.setAttribute('class', 'card-text')
+        const cardBtn = document.createElement('a')
+        cardBtn.setAttribute('class', 'btn btn-primary')
+        cardBtn.setAttribute('href', `${newsData[item].url}`)
+        cardBtn.setAttribute('id', `story-url-${itemId}`)
+        cardBtn.setAttribute('target', '_blank')
+        cardBtn.innerText = 'Learn More'
+        const dataHeart = document.createElement('div')
+        dataHeart.setAttribute('class', 'data-heart-image mt-1 mb-3')  
+        dataHeart.setAttribute('data-id', itemId) 
+        dataHeart.addEventListener('click', () => {
+            const favoriteId = itemId
+            favoriteBtnHandler(itemId)
+        })
+        const cardSmallText = document.createElement('small')
+        cardSmallText.setAttribute('class', 'text-muted')
+        cardSmallText.setAttribute('id', `date-published-${itemId}`)
+    
+        // Date function 
+        const event = new Date(newsData[item].publishedAt)
+        let stringEvent = event.toString()
+        stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
+        cardSmallText.innerText = `${stringEvent}`
+    
+        cardBody.appendChild(dataHeart)
+        cardBody.appendChild(cardH5Tag)
+        cardBody.appendChild(cardImage)
+        cardPtag2.appendChild(cardSmallText)
+        cardBody.appendChild(cardPtag2)
+        cardBody.appendChild(cardPtag1)
+        cardBody.appendChild(cardBtn)
+        cardDiv.appendChild(cardBody)
+        renderNewsSection.appendChild(cardDiv)
+        }
     } else {
-        cardImage.setAttribute('src', `${newsData[item].urlToImage}`)
-    }
-    cardImage.setAttribute('class', 'card-img-top')
-    cardImage.setAttribute('id', `card-image-${randomNumber}`)
-    const cardBody = document.createElement('div')
-    cardBody.setAttribute('class', 'card-body')
-    const cardH5Tag = document.createElement('h5')
-    cardH5Tag.setAttribute('class', 'card-title')
-    cardH5Tag.setAttribute('id', `card-title-${randomNumber}`)
-    cardH5Tag.innerText = `${newsData[item].title}`
-    const cardPtag1 = document.createElement('p')
-    cardPtag1.setAttribute('class', 'card-text')
-    cardPtag1.setAttribute('id', `card-description-${randomNumber}`)
-    cardPtag1.innerText = `${newsData[item].description}`
-    const cardPtag2 = document.createElement('p')
-    cardPtag2.setAttribute('class', 'card-text')
-    const cardBtn = document.createElement('a')
-    cardBtn.setAttribute('class', 'btn btn-primary')
-    cardBtn.setAttribute('href', `${newsData[item].url}`)
-    cardBtn.setAttribute('id', `story-url-${randomNumber}`)
-    cardBtn.setAttribute('target', '_blank')
-    cardBtn.innerText = 'Learn More'
-    const dataHeart = document.createElement('div')
-    dataHeart.setAttribute('class', 'data-heart-image mt-1 mb-3')  
-    dataHeart.setAttribute('data-id', randomNumber) 
-    const cardSmallText = document.createElement('small')
-    cardSmallText.setAttribute('class', 'text-muted')
-    cardSmallText.setAttribute('id', `date-published-${randomNumber}`)
-
-    // Date function 
-    const event = new Date(newsData[item].publishedAt)
-    let stringEvent = event.toString()
-    stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
-    cardSmallText.innerText = `${stringEvent}`
-
-    cardBody.appendChild(dataHeart)
-    cardBody.appendChild(cardH5Tag)
-    cardBody.appendChild(cardImage)
-    cardPtag2.appendChild(cardSmallText)
-    cardBody.appendChild(cardPtag2)
-    cardBody.appendChild(cardPtag1)
-    cardBody.appendChild(cardBtn)
-    cardDiv.appendChild(cardBody)
-    renderNewsSection.appendChild(cardDiv)
+        const itemId = Math.random()
+        const cardDiv = document.createElement('div')
+        cardDiv.setAttribute('id', itemId)
+        cardDiv.setAttribute('class', 'card border m-2')
+        cardDiv.setAttribute('style', 'min-width: 20%')
+        const cardImage = document.createElement('img')
+        if (newsData.imageUrl == null) {
+            cardImage.setAttribute('src', '../../styles/images/no-photo.png')
+        } else {
+            cardImage.setAttribute('src', `${newsData.imageUrl}`)
+        }
+        cardImage.setAttribute('class', 'card-img-top')
+        cardImage.setAttribute('id', `card-image-${itemId}`)
+        const cardBody = document.createElement('div')
+        cardBody.setAttribute('class', 'card-body')
+        const cardH5Tag = document.createElement('h5')
+        cardH5Tag.setAttribute('class', 'card-title')
+        cardH5Tag.setAttribute('id', `card-title-${itemId}`)
+        cardH5Tag.innerText = `${newsData.title}`
+        const cardPtag1 = document.createElement('p')
+        cardPtag1.setAttribute('class', 'card-text')
+        cardPtag1.setAttribute('id', `card-description-${itemId}`)
+        cardPtag1.innerText = `${newsData.description}`
+        const cardPtag2 = document.createElement('p')
+        cardPtag2.setAttribute('class', 'card-text')
+        const cardBtn = document.createElement('a')
+        cardBtn.setAttribute('class', 'btn btn-primary')
+        cardBtn.setAttribute('href', `${newsData.storyUrl}`)
+        cardBtn.setAttribute('id', `story-url-${itemId}`)
+        cardBtn.setAttribute('target', '_blank')
+        cardBtn.innerText = 'Learn More'
+        const cardLnk = document.createElement('button')
+        cardLnk.setAttribute('type', 'button')
+        cardLnk.setAttribute('class', 'btn btn-link')
+        cardLnk.addEventListener('click', () => {
+            renderData(newsDataState)
+        })
+        cardLnk.innerText = "Back to the front page"
+        const cardSmallText = document.createElement('small')
+        cardSmallText.setAttribute('class', 'text-muted')
+        cardSmallText.setAttribute('id', `date-published-${itemId}`)
+    
+        // Date function 
+        const event = new Date(newsData.datePublished)
+        let stringEvent = event.toString()
+        stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
+        cardSmallText.innerText = `${stringEvent}`
+    
+        cardBody.appendChild(cardH5Tag)
+        cardBody.appendChild(cardImage)
+        cardPtag2.appendChild(cardSmallText)
+        cardBody.appendChild(cardPtag2)
+        cardBody.appendChild(cardPtag1)
+        cardBody.appendChild(cardBtn)
+        cardBody.appendChild(cardLnk)
+        cardDiv.appendChild(cardBody)
+        renderNewsSection.appendChild(cardDiv)
     }
     window.scrollTo({
         top: 700,
         behavior: 'smooth'
     });  
-    favoriteBtnHandler()
 }
 
-const favoriteBtnHandler = () => {
-    const dataHeartHtmlGroup = document.getElementsByClassName('data-heart-image')
-    for (favoriteBtn of dataHeartHtmlGroup){
-        favoriteBtn.addEventListener('click', () => {
-           findFavoriteStoryAttributes()
-        })
-    }
+const favoriteBtnHandler = (itemId) => {
+    findFavoriteStoryAttributes(itemId)
 }
 
 
@@ -157,24 +224,7 @@ const postFavoriteStory = favoriteStoryObj => {
         body: JSON.stringify(favoriteStoryObj)
     })
     .then(response => response.json())
-    .then(response => renderFavorite(response))
-}
-
-const renderFavorite = favoriteStorie => {
-    toggleNewSection()
-    const renderFavoriteSection = document.getElementById('render-favorite-section')
-    renderFavoriteSection.innerHTML = `
-        <div class="card">
-            <img src=${favoriteStorie.imageUrl} class="card-img-top p-5" alt="News Image">
-            <div class="card-body px-5">
-                <h5 class="card-title">${favoriteStorie.title}</h5>
-                <p class="card-text">${favoriteStorie.description}</p>
-                <a href=${favoriteStorie.storyUrl} class="btn btn-primary">Go to the source</a>
-                <button type="button" class="btn btn-link">Close</button>
-            </div>
-        </div>`
-    renderFavoriteSection.classList.toggle('d-none')
-   
+    .then(response => renderData(response))
 }
 
 const toggleNewSection = () => {
