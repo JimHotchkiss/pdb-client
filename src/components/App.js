@@ -3,6 +3,7 @@ window.onload = function() {
     getFavoritesBtnHandler()
     searchTopicBtnHandler()
   };
+
 const getFavoritesBtnHandler = () => {
     const usersIdBtn = document.getElementById('favorites-id')
     usersIdBtn.addEventListener('click', () => {
@@ -64,7 +65,6 @@ const renderData = (newsData) => {
     const renderNewsSection = document.getElementById('render-news-section')
     for(let item in newsData) {
     const randomNumber = Math.random()
-        // console.log(newsData[item], randomNumber)
     const cardDiv = document.createElement('div')
     cardDiv.setAttribute('id', randomNumber)
     cardDiv.setAttribute('class', 'card border m-2')
@@ -129,8 +129,8 @@ const favoriteBtnHandler = () => {
     const dataHeartHtmlGroup = document.getElementsByClassName('data-heart-image')
     for (favoriteBtn of dataHeartHtmlGroup){
         favoriteBtn.addEventListener('click', () => {
-            const favoriteId = favoriteBtn.dataset.id 
-            findFavoriteStoryAttributes(favoriteId)})
+           console.log(favoriteBtn)
+        })
     }
 }
 
@@ -157,7 +157,29 @@ const postFavoriteStory = favoriteStoryObj => {
         body: JSON.stringify(favoriteStoryObj)
     })
     .then(response => response.json())
-    .then(response => console.log(response))
+    .then(response => renderFavorite(response))
+}
+
+const renderFavorite = favoriteStorie => {
+    toggleNewSection()
+    const renderFavoriteSection = document.getElementById('render-favorite-section')
+    renderFavoriteSection.innerHTML = `
+        <div class="card">
+            <img src=${favoriteStorie.imageUrl} class="card-img-top p-5" alt="News Image">
+            <div class="card-body px-5">
+                <h5 class="card-title">${favoriteStorie.title}</h5>
+                <p class="card-text">${favoriteStorie.description}</p>
+                <a href=${favoriteStorie.storyUrl} class="btn btn-primary">Go to the source</a>
+                <button type="button" class="btn btn-link">Close</button>
+            </div>
+        </div>`
+    renderFavoriteSection.classList.toggle('d-none')
+   
+}
+
+const toggleNewSection = () => {
+    const renderNewsSection = document.getElementById('render-news-section')
+    renderNewsSection.classList.toggle('d-none')
 }
 
 
