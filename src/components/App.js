@@ -129,7 +129,7 @@ const favoriteBtnHandler = () => {
     const dataHeartHtmlGroup = document.getElementsByClassName('data-heart-image')
     for (favoriteBtn of dataHeartHtmlGroup){
         favoriteBtn.addEventListener('click', () => {
-           console.log(favoriteBtn)
+           findFavoriteStoryAttributes()
         })
     }
 }
