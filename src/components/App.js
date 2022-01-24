@@ -5,7 +5,6 @@ window.onload = function() {
     
   };
 
-let newsDataState 
 const getFavoritesBtnHandler = () => {
     const usersIdBtn = document.getElementById('favorites-id')
     usersIdBtn.addEventListener('click', () => {
@@ -18,8 +17,20 @@ const getFavorites = () => {
     const usersBaseUrl = 'http://localhost:3000/api/v1/'
     fetch(usersBaseUrl + `favorites`)
     .then(response => response.json())
-    .then(response => console.log(response))
+    .then(response => {
+        FavoriteStories.state = response
+        renderData(FavoriteStories.state)
+    })
 }
+
+const NewsData = () => {
+    state = []
+}
+
+const FavoriteStories = () => {
+    state = []
+}
+
 
 const searchTopicBtnHandler = () => {
     const searchTopicBtn = document.getElementById('search-topic-btn')
@@ -55,20 +66,31 @@ const getSearchTopicData = (searchInputValue) => {
 const getYourBriefBtnHandler = () => {
 const briefBtn = document.getElementById('brief-btn')
 briefBtn.addEventListener('click', () => {
-   clearHtmlContent()
-   getBriefingData()
+    console.log(NewsData.state)
+    if(NewsData.state){
+        console.log(NewsData.state)
+        const newsData = NewsData.state
+        renderData(newsData)
+        } else {
+            console.log(NewsData.state)
+            clearHtmlContent()
+            getBriefingData() 
+        }
     })
 }
 
 const getBriefingData = () => {
     fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=bcd9264c4d4646b5a22d288a9a796d3d')
     .then(response => response.json())
-    .then(response => renderData(response.articles))
+    .then(response => {
+        console.log(response.articles)
+        NewsData.state = response.articles
+        renderData(NewsData.state)
+    })
 }
 
 const renderData = (newsData) => {
     const renderNewsSection = document.getElementById('render-news-section')
-    console.log(newsData)
     // Clear Html 
     clearHtmlContent()
     // Array
@@ -80,10 +102,16 @@ const renderData = (newsData) => {
         cardDiv.setAttribute('class', 'card border m-2')
         cardDiv.setAttribute('style', 'min-width: 20%')
         const cardImage = document.createElement('img')
-        if (newsData[item].urlToImage == null) {
+        let imgUrl 
+        if (newsData[item].urlToImage) {
+            imgUrl = newsData[item].urlToImage
+        } else {
+            imgUrl = newsData[item].imageUrl
+        }
+        if (imgUrl  == null) {
             cardImage.setAttribute('src', '../../styles/images/no-photo.png')
         } else {
-            cardImage.setAttribute('src', `${newsData[item].urlToImage}`)
+            cardImage.setAttribute('src', `${imgUrl}`)
         }
         cardImage.setAttribute('class', 'card-img-top')
         cardImage.setAttribute('id', `card-image-${itemId}`)
@@ -117,12 +145,18 @@ const renderData = (newsData) => {
         cardSmallText.setAttribute('id', `date-published-${itemId}`)
     
         // Date function 
-        const event = new Date(newsData[item].publishedAt)
-        let stringEvent = event.toString()
-        stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
-        cardSmallText.innerText = `${stringEvent}`
-    
-        cardBody.appendChild(dataHeart)
+        if(newsData[item].publishedAt) {
+            const event = new Date(newsData[item].publishedAt)
+            let stringEvent = event.toString()
+            stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
+            cardSmallText.innerText = `${stringEvent}`
+        } else {
+            cardSmallText.innerText = newsData[item].datePublished
+        }
+
+        if(newsData[item].publishedAt) {
+            cardBody.appendChild(dataHeart)
+        } 
         cardBody.appendChild(cardH5Tag)
         cardBody.appendChild(cardImage)
         cardPtag2.appendChild(cardSmallText)
@@ -168,7 +202,7 @@ const renderData = (newsData) => {
         cardLnk.setAttribute('type', 'button')
         cardLnk.setAttribute('class', 'btn btn-link')
         cardLnk.addEventListener('click', () => {
-            renderData(newsDataState)
+            renderData(NewsData.state)
         })
         cardLnk.innerText = "Back to the front page"
         const cardSmallText = document.createElement('small')
@@ -224,7 +258,10 @@ const postFavoriteStory = favoriteStoryObj => {
         body: JSON.stringify(favoriteStoryObj)
     })
     .then(response => response.json())
-    .then(response => renderData(response))
+    .then(response => () => {
+        FavoriteStories.state = response
+        renderData(FavoriteStories.state)
+    })
 }
 
 const toggleNewSection = () => {
