@@ -35,8 +35,8 @@ const getFavorites = () => {
     .then(response => response.json())
     .then(response => {
         console.log(response)
-        // FavoriteStories.state = response
-        // renderData(FavoriteStories.state)
+        FavoriteStories.state = response
+        renderData(FavoriteStories.state)
     })
 }
 
@@ -136,25 +136,25 @@ const renderData = (newsData) => {
         cardBtn.setAttribute('target', '_blank')
         cardBtn.innerText = 'Learn More'
         const dataHeart = document.createElement('div')
-        dataHeart.setAttribute('class', 'data-heart-image mt-1 mb-3')  
-        dataHeart.setAttribute('data-id', itemId) 
-        dataHeart.addEventListener('click', () => {
-            const favoriteId = itemId
-            favoriteBtnHandler(itemId)
-        })
+        if (!newsData[0].id) {
+            dataHeart.setAttribute('class', 'data-heart-image mt-1 mb-3')  
+            dataHeart.setAttribute('data-id', itemId) 
+            dataHeart.addEventListener('click', () => {
+                const favoriteId = itemId
+                favoriteBtnHandler(itemId)
+            })
+        }
         const cardSmallText = document.createElement('small')
         cardSmallText.setAttribute('class', 'text-muted')
         cardSmallText.setAttribute('id', `date-published-${itemId}`)
     
         // Date function 
-        if(newsData[item].publishedAt) {
-            const event = new Date(newsData[item].publishedAt)
-            let stringEvent = event.toString()
-            stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
-            cardSmallText.innerText = `${stringEvent}`
-        } else {
-            cardSmallText.innerText = newsData[item].datePublished
-        }
+        console.log(newsData[item].publishedAt)
+       const event = new Date(newsData[item].publishedAt)
+        let stringEvent = event.toString()
+        stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
+        cardSmallText.innerText = `${stringEvent}`
+  
 
         if(newsData[item].publishedAt) {
             cardBody.appendChild(dataHeart)
@@ -169,35 +169,29 @@ const renderData = (newsData) => {
         renderNewsSection.appendChild(cardDiv)
         }
     } else {
-        const itemId = Math.random()
         const cardDiv = document.createElement('div')
-        cardDiv.setAttribute('id', itemId)
         cardDiv.setAttribute('class', 'card border m-2')
         cardDiv.setAttribute('style', 'min-width: 20%')
         const cardImage = document.createElement('img')
-        if (newsData.imageUrl == null) {
+        if (newsData.urlToImage == null) {
             cardImage.setAttribute('src', '../../styles/images/no-photo.png')
         } else {
-            cardImage.setAttribute('src', `${newsData.imageUrl}`)
+            cardImage.setAttribute('src', `${newsData.urlToImage}`)
         }
         cardImage.setAttribute('class', 'card-img-top')
-        cardImage.setAttribute('id', `card-image-${itemId}`)
         const cardBody = document.createElement('div')
         cardBody.setAttribute('class', 'card-body')
         const cardH5Tag = document.createElement('h5')
         cardH5Tag.setAttribute('class', 'card-title')
-        cardH5Tag.setAttribute('id', `card-title-${itemId}`)
         cardH5Tag.innerText = `${newsData.title}`
         const cardPtag1 = document.createElement('p')
         cardPtag1.setAttribute('class', 'card-text')
-        cardPtag1.setAttribute('id', `card-description-${itemId}`)
         cardPtag1.innerText = `${newsData.description}`
         const cardPtag2 = document.createElement('p')
         cardPtag2.setAttribute('class', 'card-text')
         const cardBtn = document.createElement('a')
         cardBtn.setAttribute('class', 'btn btn-primary')
-        cardBtn.setAttribute('href', `${newsData.storyUrl}`)
-        cardBtn.setAttribute('id', `story-url-${itemId}`)
+        cardBtn.setAttribute('href', `${newsData.url}`)
         cardBtn.setAttribute('target', '_blank')
         cardBtn.innerText = 'Learn More'
         const cardLnk = document.createElement('button')
@@ -209,10 +203,10 @@ const renderData = (newsData) => {
         cardLnk.innerText = "Back to the front page"
         const cardSmallText = document.createElement('small')
         cardSmallText.setAttribute('class', 'text-muted')
-        cardSmallText.setAttribute('id', `date-published-${itemId}`)
     
         // Date function 
-        const event = new Date(newsData.datePublished)
+        const event = new Date(newsData.publishedAt)
+        console.log(event)
         let stringEvent = event.toString()
         stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
         cardSmallText.innerText = `${stringEvent}`
@@ -234,7 +228,6 @@ const renderData = (newsData) => {
 }
 
 const favoriteBtnHandler = (itemId) => {
-    console.log(itemId)
     findFavoriteStoryAttributes(itemId)
 }
 
@@ -253,7 +246,7 @@ const findFavoriteStoryAttributes = favoriteId => {
 }
 
 const postFavoriteStory = favoriteStoryObj => {
-    console.log(favoriteStoryObj)
+    // console.log(favoriteStoryObj)
     fetch('http://localhost:3000/api/v1/favorites', {
         method: 'post',
         headers:  {
@@ -263,10 +256,10 @@ const postFavoriteStory = favoriteStoryObj => {
         body: JSON.stringify(favoriteStoryObj)
     })
     .then(response => response.json())
-    .then(response => () => {
-        console.log(response)
-        // FavoriteStories.state = response
-        // renderData(FavoriteStories.state)
+    .then(response => {
+        // console.log(response)
+        FavoriteStories.state = response
+        renderData(response)
     })
 }
 
