@@ -5,7 +5,22 @@ window.onload = function() {
     
   }
 
+// Your Brief handler
+const getYourBriefBtnHandler = () => {
+    const briefBtn = document.getElementById('brief-btn')
+    briefBtn.addEventListener('click', () => {
+        console.log(NewsData.state)
+        if(NewsData.state){
+            const newsData = NewsData.state
+            renderData(newsData)
+            } else {
+                clearHtmlContent()
+                getBriefingData() 
+            }
+        })
+    }
 
+// Favorites handler
 const getFavoritesBtnHandler = () => {
     const usersIdBtn = document.getElementById('favorites-id')
     usersIdBtn.addEventListener('click', () => {
@@ -19,8 +34,9 @@ const getFavorites = () => {
     fetch(usersBaseUrl + `favorites`)
     .then(response => response.json())
     .then(response => {
-        FavoriteStories.state = response
-        renderData(FavoriteStories.state)
+        console.log(response)
+        // FavoriteStories.state = response
+        // renderData(FavoriteStories.state)
     })
 }
 
@@ -64,19 +80,6 @@ const getSearchTopicData = (searchInputValue) => {
     })
 }
 
-const getYourBriefBtnHandler = () => {
-const briefBtn = document.getElementById('brief-btn')
-briefBtn.addEventListener('click', () => {
-    console.log(NewsData.state)
-    if(NewsData.state){
-        const newsData = NewsData.state
-        renderData(newsData)
-        } else {
-            clearHtmlContent()
-            getBriefingData() 
-        }
-    })
-}
 
 const getBriefingData = () => {
     fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=bcd9264c4d4646b5a22d288a9a796d3d')
@@ -231,23 +234,26 @@ const renderData = (newsData) => {
 }
 
 const favoriteBtnHandler = (itemId) => {
+    console.log(itemId)
     findFavoriteStoryAttributes(itemId)
 }
 
 
 const findFavoriteStoryAttributes = favoriteId => {
+    console.log('findFavoriteStoryAttributres', favoriteId)
     const favoriteStoryObj = {favorite:{
         title: document.getElementById(`card-title-${favoriteId}`).innerText,
         description: document.getElementById(`card-description-${favoriteId}`).innerText,
-        imageUrl: favoriteImgUrl = document.getElementById(`card-image-${favoriteId}`).getAttribute("src"),
-        storyUrl:document.getElementById(`story-url-${favoriteId}`).getAttribute("href"),
-        datePublished: document.getElementById(`date-published-${favoriteId}`).innerText,
+        urlToImage: favoriteImgUrl = document.getElementById(`card-image-${favoriteId}`).getAttribute("src"),
+        url:document.getElementById(`story-url-${favoriteId}`).getAttribute("href"),
+        publishedAt: document.getElementById(`date-published-${favoriteId}`).innerText,
       }};
 
      postFavoriteStory(favoriteStoryObj)
 }
 
 const postFavoriteStory = favoriteStoryObj => {
+    console.log(favoriteStoryObj)
     fetch('http://localhost:3000/api/v1/favorites', {
         method: 'post',
         headers:  {
@@ -258,8 +264,9 @@ const postFavoriteStory = favoriteStoryObj => {
     })
     .then(response => response.json())
     .then(response => () => {
-        FavoriteStories.state = response
-        renderData(FavoriteStories.state)
+        console.log(response)
+        // FavoriteStories.state = response
+        // renderData(FavoriteStories.state)
     })
 }
 
