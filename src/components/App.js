@@ -3,7 +3,8 @@ window.onload = function() {
     getFavoritesBtnHandler()
     searchTopicBtnHandler()
     
-  };
+  }
+
 
 const getFavoritesBtnHandler = () => {
     const usersIdBtn = document.getElementById('favorites-id')
@@ -68,11 +69,9 @@ const briefBtn = document.getElementById('brief-btn')
 briefBtn.addEventListener('click', () => {
     console.log(NewsData.state)
     if(NewsData.state){
-        console.log(NewsData.state)
         const newsData = NewsData.state
         renderData(newsData)
         } else {
-            console.log(NewsData.state)
             clearHtmlContent()
             getBriefingData() 
         }
