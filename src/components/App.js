@@ -9,7 +9,6 @@ window.onload = function() {
 const getYourBriefBtnHandler = () => {
     const briefBtn = document.getElementById('brief-btn')
     briefBtn.addEventListener('click', () => {
-        console.log(NewsData.state)
         if(NewsData.state){
             const newsData = NewsData.state
             renderData(newsData)
@@ -34,9 +33,13 @@ const getFavorites = () => {
     fetch(usersBaseUrl + `favorites`)
     .then(response => response.json())
     .then(response => {
-        console.log(response)
-        FavoriteStories.state = response
-        renderData(FavoriteStories.state)
+        if (response.length == 0 ) {
+            alert('No stories have been saved to "favorites". Be the first!')
+        } else {
+            console.log(response)
+            FavoriteStories.state = response
+            renderData(FavoriteStories.state)
+        }
     })
 }
 
@@ -74,7 +77,7 @@ const resetSearchTopicPlaceHolder = () => {
 const getSearchTopicData = (searchInputValue) => {
     fetch(`https://newsapi.org/v2/everything?q=${searchInputValue}&apiKey=bcd9264c4d4646b5a22d288a9a796d3d`)
     .then(response => response.json())
-    .then(response => () => {
+    .then(response =>  {
         renderData(response.articles)
         newsDataState = response.articles
     })
@@ -246,7 +249,6 @@ const findFavoriteStoryAttributes = favoriteId => {
 }
 
 const postFavoriteStory = favoriteStoryObj => {
-    // console.log(favoriteStoryObj)
     fetch('http://localhost:3000/api/v1/favorites', {
         method: 'post',
         headers:  {
@@ -257,9 +259,13 @@ const postFavoriteStory = favoriteStoryObj => {
     })
     .then(response => response.json())
     .then(response => {
-        // console.log(response)
-        FavoriteStories.state = response
-        renderData(response)
+        if (response.error) {
+            alert('This story has already been saved to "favorites". Check the "favorites" in the menu')
+        } else {
+            console.log(response)
+            FavoriteStories.state = response
+            renderData(response)
+        }
     })
 }
 
