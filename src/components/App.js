@@ -36,7 +36,6 @@ const getFavorites = () => {
         if (response.length == 0 ) {
             alert('No stories have been saved to "favorites". Be the first!')
         } else {
-            console.log(response)
             FavoriteStories.state = response
             renderData(FavoriteStories.state)
         }
@@ -88,7 +87,6 @@ const getBriefingData = () => {
     fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=bcd9264c4d4646b5a22d288a9a796d3d')
     .then(response => response.json())
     .then(response => {
-        console.log(response.articles)
         NewsData.state = response.articles
         renderData(NewsData.state)
     })
@@ -133,10 +131,14 @@ const renderData = (newsData) => {
         const cardPtag2 = document.createElement('p')
         cardPtag2.setAttribute('class', 'card-text')
         const cardBtn = document.createElement('a')
-        cardBtn.setAttribute('class', 'btn btn-primary')
+        // Headline News
+        cardBtn.setAttribute('class', 'btn btn-warning')
         cardBtn.setAttribute('href', `${newsData[item].url}`)
         cardBtn.setAttribute('id', `story-url-${itemId}`)
         cardBtn.setAttribute('target', '_blank')
+        // Join Conversation
+        
+        
         cardBtn.innerText = 'Learn More'
         const dataHeart = document.createElement('div')
         if (!newsData[0].id) {
@@ -152,7 +154,6 @@ const renderData = (newsData) => {
         cardSmallText.setAttribute('id', `date-published-${itemId}`)
     
         // Date function 
-        console.log(newsData[item].publishedAt)
        const event = new Date(newsData[item].publishedAt)
         let stringEvent = event.toString()
         stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
@@ -168,6 +169,7 @@ const renderData = (newsData) => {
         cardBody.appendChild(cardPtag2)
         cardBody.appendChild(cardPtag1)
         cardBody.appendChild(cardBtn)
+        // Put the Join Conversation Btn
         cardDiv.appendChild(cardBody)
         renderNewsSection.appendChild(cardDiv)
         }
@@ -181,9 +183,10 @@ const renderData = (newsData) => {
         } else {
             cardImage.setAttribute('src', `${newsData.urlToImage}`)
         }
+        // Favorite Page 
         cardImage.setAttribute('class', 'card-img-top')
         const cardBody = document.createElement('div')
-        cardBody.setAttribute('class', 'card-body')
+        cardBody.setAttribute('class', 'card-body max-width: 60%')
         const cardH5Tag = document.createElement('h5')
         cardH5Tag.setAttribute('class', 'card-title')
         cardH5Tag.innerText = `${newsData.title}`
@@ -193,13 +196,13 @@ const renderData = (newsData) => {
         const cardPtag2 = document.createElement('p')
         cardPtag2.setAttribute('class', 'card-text')
         const cardBtn = document.createElement('a')
-        cardBtn.setAttribute('class', 'btn btn-primary')
+        cardBtn.setAttribute('class', 'btn btn-warning')
         cardBtn.setAttribute('href', `${newsData.url}`)
         cardBtn.setAttribute('target', '_blank')
         cardBtn.innerText = 'Learn More'
         const cardLnk = document.createElement('button')
         cardLnk.setAttribute('type', 'button')
-        cardLnk.setAttribute('class', 'btn btn-link')
+        cardLnk.setAttribute('class', 'btn btn-link ml-auto')
         cardLnk.addEventListener('click', () => {
             renderData(NewsData.state)
         })
@@ -209,7 +212,6 @@ const renderData = (newsData) => {
     
         // Date function 
         const event = new Date(newsData.publishedAt)
-        console.log(event)
         let stringEvent = event.toString()
         stringEvent = stringEvent.split(" ").slice(0, 4).join(" ")
         cardSmallText.innerText = `${stringEvent}`
@@ -236,7 +238,6 @@ const favoriteBtnHandler = (itemId) => {
 
 
 const findFavoriteStoryAttributes = favoriteId => {
-    console.log('findFavoriteStoryAttributres', favoriteId)
     const favoriteStoryObj = {favorite:{
         title: document.getElementById(`card-title-${favoriteId}`).innerText,
         description: document.getElementById(`card-description-${favoriteId}`).innerText,
@@ -262,7 +263,6 @@ const postFavoriteStory = favoriteStoryObj => {
         if (response.error) {
             alert('This story has already been saved to "favorites". Check the "favorites" in the menu')
         } else {
-            console.log(response)
             FavoriteStories.state = response
             renderData(response)
         }
