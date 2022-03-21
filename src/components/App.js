@@ -136,7 +136,13 @@ const renderData = (newsData) => {
         cardBtn.setAttribute('href', `${newsData[item].url}`)
         cardBtn.setAttribute('id', `story-url-${itemId}`)
         cardBtn.setAttribute('target', '_blank')
-        // Join Conversation
+        // Join Conversation - Instead of text, make it an icon
+        // Create conditional to put in conversation icon instead of heart
+        // Headline News
+        cardBtn.setAttribute('class', 'btn btn-warning')
+        cardBtn.setAttribute('href', `${newsData[item].url}`)
+        cardBtn.setAttribute('id', `story-url-${itemId}`)
+        cardBtn.setAttribute('target', '_blank')
         
         
         cardBtn.innerText = 'Learn More'
@@ -149,6 +155,7 @@ const renderData = (newsData) => {
                 favoriteBtnHandler(itemId)
             })
         }
+
         const cardSmallText = document.createElement('small')
         cardSmallText.setAttribute('class', 'text-muted')
         cardSmallText.setAttribute('id', `date-published-${itemId}`)
@@ -163,13 +170,13 @@ const renderData = (newsData) => {
         if(newsData[item].publishedAt) {
             cardBody.appendChild(dataHeart)
         } 
+        // Put the Join Conversation icon btn
         cardBody.appendChild(cardH5Tag)
         cardBody.appendChild(cardImage)
         cardPtag2.appendChild(cardSmallText)
         cardBody.appendChild(cardPtag2)
         cardBody.appendChild(cardPtag1)
         cardBody.appendChild(cardBtn)
-        // Put the Join Conversation Btn
         cardDiv.appendChild(cardBody)
         renderNewsSection.appendChild(cardDiv)
         }
@@ -202,7 +209,7 @@ const renderData = (newsData) => {
         cardBtn.innerText = 'Learn More'
         const cardLnk = document.createElement('button')
         cardLnk.setAttribute('type', 'button')
-        cardLnk.setAttribute('class', 'btn btn-link ml-auto')
+        cardLnk.setAttribute('class', 'btn btn-link')
         cardLnk.addEventListener('click', () => {
             renderData(NewsData.state)
         })

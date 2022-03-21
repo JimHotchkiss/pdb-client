@@ -1,7 +1,7 @@
 .data-heart-image {
-    background: transparent url("../styles/images/heart.svg");
+    background: transparent url("../styles/images/conversation.svg");
     background-repeat: no-repeat;
-    opacity: 0.5;
+    /* opacity: 0.5; */
     width: 27px;
     height: 27px;
     background-size: 25px;
