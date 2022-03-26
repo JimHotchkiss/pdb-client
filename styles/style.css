@@ -1,18 +1,35 @@
-.data-heart-image {
-    background: transparent url("../styles/images/conversation.svg");
+.data-bookmark-img {
+    background: transparent url("../styles/images/bookmark.svg");
     background-repeat: no-repeat;
-    /* opacity: 0.5; */
-    width: 27px;
+    opacity: 0.5;
+    width: 24px;
     height: 27px;
-    background-size: 25px;
+    background-size: 20px;
     margin: 20px 0 0 auto;
     transition: all 0.3s ease-in-out;
 }
 
-.data-heart-image:hover {
+.comment-image {
+    background: transparent url("../styles/images/comments.svg");
+    background-repeat: no-repeat; 
+    opacity: 0.5;
+    width: 25px;
+    height: 25px;
+    background-size: 25px;
+    margin: 20px 0 0 auto;
+    /* transition: all 0.3s ease-in-out; */
+}
+
+.data-bookmark-img:hover {
     cursor: pointer;
-    background-size: 27px;
-    transition: all 0.3s ease-in-out;
+    /* background-size: 27px;
+    transition: all 0.3s ease-in-out; */
+}
+
+.comment-image:hover {
+    cursor: pointer;
+    /* background-size: 27px;
+    transition: all 0.3s ease-in-out; */
 }
 @media(min-width: 769px) {
    .search-input {

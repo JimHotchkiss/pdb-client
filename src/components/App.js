@@ -28,6 +28,11 @@ const getFavoritesBtnHandler = () => {
 
 }
 
+const hideSectionOneTwo = () => {
+    const sectionOneTwo = document.getElementById('section-one-two')
+    sectionOneTwo.style.display = 'none'
+}
+
 const getFavorites = () => {
     const usersBaseUrl = 'http://localhost:3000/api/v1/'
     fetch(usersBaseUrl + `favorites`)
@@ -38,6 +43,7 @@ const getFavorites = () => {
         } else {
             FavoriteStories.state = response
             renderData(FavoriteStories.state)
+            hideSectionOneTwo()
         }
     })
 }
@@ -146,14 +152,51 @@ const renderData = (newsData) => {
         
         
         cardBtn.innerText = 'Learn More'
-        const dataHeart = document.createElement('div')
+     
+        const dataIcon = document.createElement('div')
         if (!newsData[0].id) {
-            dataHeart.setAttribute('class', 'data-heart-image mt-1 mb-3')  
-            dataHeart.setAttribute('data-id', itemId) 
-            dataHeart.addEventListener('click', () => {
+            dataIcon.setAttribute('class', 'data-bookmark-img mt-1 mb-3')  
+            dataIcon.setAttribute('data-id', itemId) 
+            dataIcon.addEventListener('click', () => {
                 const favoriteId = itemId
                 favoriteBtnHandler(itemId)
             })
+        } else {
+            dataIcon.setAttribute('class', 'comment-image mt-1 mb-3') 
+            dataIcon.setAttribute('data-id', itemId) 
+            dataIcon.addEventListener('click', () => {
+                const favoriteId = itemId
+                conversationBtnHandler()
+            })
+        }
+
+        const conversationBtnHandler = () => {
+            console.log(newsData[item])
+            // <div class="mb-3">
+            //     <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+            //     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            // </div>
+            clearHtmlContent()
+            renderCommentInput()
+
+        }
+
+        const renderCommentInput = () => {
+            hideSectionOneTwo()
+            const commentInputDiv = document.createElement('div')
+            commentInputDiv.setAttribute('class', 'container mb-3')
+            const commentLabel = document.createElement('label')
+            commentLabel.setAttribute('class', 'form-label')
+            commentLabel.innerText = "Join the conversation"
+            const commentText = document.createElement('textarea')
+            commentText.setAttribute('class', 'form-control')
+            // Put together div, label and text 
+            commentInputDiv.appendChild(commentLabel)
+            commentInputDiv.appendChild(commentText)
+            // Render news section
+            const renderNewsSection = document.getElementById('render-news-section')
+            renderNewsSection.appendChild(commentInputDiv)
+
         }
 
         const cardSmallText = document.createElement('small')
@@ -168,9 +211,10 @@ const renderData = (newsData) => {
   
 
         if(newsData[item].publishedAt) {
-            cardBody.appendChild(dataHeart)
+            cardBody.appendChild(dataIcon)
         } 
         // Put the Join Conversation icon btn
+        cardBody.appendChild(dataIcon)
         cardBody.appendChild(cardH5Tag)
         cardBody.appendChild(cardImage)
         cardPtag2.appendChild(cardSmallText)
